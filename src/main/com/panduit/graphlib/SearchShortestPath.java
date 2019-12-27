@@ -10,7 +10,8 @@ import java.util.PriorityQueue;
 
 public class SearchShortestPath implements Search {
 	/*
-	 * Implements a search to find the shortest path between nodes with weighted edges
+	 * Implements a search to find the shortest path between two nodes with 
+	 * weighted edges using Dijkstra’s algorithm
 	 */
 	
 	/**
@@ -25,17 +26,18 @@ public class SearchShortestPath implements Search {
 		
 		PriorityQueue<Vertex> priorityQueue = new PriorityQueue<Vertex>();
 		Set<Integer> visited = new HashSet<Integer>();
+		// key is child and value is parent(predecessor)
 		Map<Integer, Integer> parentMap = new HashMap<Integer, Integer>();
 		Integer numVertices = vertices.size();
-		double[] edgeDistance;
+		double[] edgeDistance; // will have the current lowest weight for each edge
 		Vertex currentVertex;
 		double currentVertexWeight = 0.0;
 		
 		edgeDistance = new double[numVertices];
+		// Set distance to maximum value
 		for (int i = 0; i < numVertices; i++) 
 			edgeDistance[i] = Integer.MAX_VALUE;
 		
-		priorityQueue.add(vertices.get(src));
 		priorityQueue.add(vertices.get(src));
 		edgeDistance[src] = 0.0;  // Distance from src to each node
 		
@@ -50,21 +52,24 @@ public class SearchShortestPath implements Search {
 				}
 				
 				for(Edge edge : currentVertex.getEdges()) {
-					// Get the neighbors for the current vertex
+					// Get all the neighbors for the current vertex
 					Integer currentEdgeVertexId = edge.getDestVertexId();
 					if(visited.contains(currentEdgeVertexId)) {
+						// If neighbor vertex has been seen then no need to process again
 						continue;
 					} 
 									
-					// Update the distance to each node from source
 					currentVertexWeight = edge.getWeight();
-					// Child + Parent weight
+					// Total weight is the accumulated weighted distance from source
 					double totalWeight = currentVertexWeight + edgeDistance[currentId]; 
 					
 					if(totalWeight < edgeDistance[currentEdgeVertexId]) {
+						// For current vertex found a smaller weighted distance from source
 						edgeDistance[currentEdgeVertexId] = totalWeight;
 						Vertex vertex = vertices.get(currentEdgeVertexId);
 						vertex.setWeight(totalWeight);
+						
+						// vertex can be added multiple times with decreasing weights						
 						priorityQueue.add(vertex);
 						parentMap.put(currentEdgeVertexId, currentId);
 						

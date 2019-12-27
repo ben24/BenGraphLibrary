@@ -15,28 +15,33 @@ public class Graph implements IntfGraph, Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
+	// This is the base for adjacency list
 	private Map<Integer, ArrayList<Edge>> vertices = new HashMap<Integer, ArrayList<Edge>>();
+	// Enable index access to vertices
 	private ArrayList<Vertex> vertexList = new ArrayList<Vertex>();
-	private Integer vertexCount = 0;
+	// vertex Ids start at 0
+	private Integer vertexCount = 0;  
+	// Map vertex name to its index
 	private Map<String, Integer> names = new HashMap<String, Integer>();
 	
-
 
 	public synchronized Vertex addVertex(String name) {
 		if(names.containsKey(name)) {
 			throw new IllegalArgumentException("Name already exists.");
 		}
 		ArrayList<Edge> edges = new ArrayList<Edge>();
-		// Add vertex to adjacency list
-		this.vertices.put(vertexCount, edges);
+		// Add new vertex and empty adjacency list to the vertices map
+		Vertex vertex = new Vertex(vertexCount, name, edges);
+		this.vertices.put(vertexCount++, edges);
+		
 		// Helper list for path search
-		Vertex vertex = new Vertex(vertexCount++, name, edges);
 		vertexList.add(vertex);
 		names.put(name, vertex.getId());
 		return vertex;
 	}
 	
-    public synchronized Vertex getVertex(String name) {
+	 
+	public synchronized Vertex getVertex(String name) {
 		Integer id = names.get(name);
 		if(id == null)
 			return null;
@@ -125,12 +130,14 @@ public class Graph implements IntfGraph, Serializable {
 		ArrayList<Integer> path = new ArrayList<Integer>();
 		Integer next = destination;
 	
+		// Traverse in reverse order starting with destination vertex
+		// The key/value in map is child vertex/parent(predecessor) vertex
 		while(next != null) {
 			path.add(next);
-			// val is vertex connected to key(parent)
 			next = rawPath.get(next);		
 		}
 		
+		// List for path is generated in reverse order
 		Collections.reverse(path);
 		Integer[] pathArr = null;
 
@@ -138,6 +145,8 @@ public class Graph implements IntfGraph, Serializable {
 		return pathArr;		
 	}
 	
+	
+	@Override
 	public String toString() {
 		StringBuffer out = new StringBuffer();
 		String sep = "";
