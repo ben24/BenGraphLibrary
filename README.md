@@ -1,6 +1,8 @@
 This graph library was built and tested with Java 1.8 
 
-Application Source files are under ~/src/main/com/panduit/graphlib.  Unit test files are under ~/src/test/com/panduit/graphlib.
+Application Source files are under ~/src/main/com/panduit/graphlib.  
+Unit test files are under ~/src/test/com/panduit/graphlib.
+
 Summary of Java files: 
 
 * Sample.java contains examples of how to use the graph library.
@@ -10,3 +12,5 @@ Summary of Java files:
 * Vertex.java implements the vertex class
 * Edge.java implements the edge class
 * Unit tests are in files GraphTest.java, SearchTest.java, and VertexTest.java.
+
+To run sample program set CLASSPATH based on your installation directory and type java com.panduit.graphlib.Sample

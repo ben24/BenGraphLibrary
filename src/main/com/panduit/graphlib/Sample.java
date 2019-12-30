@@ -24,6 +24,7 @@ public class Sample {
 		int numVertices = 11;
 	
 		int id=1;
+		// Adds edge between vertices 1 and 6, id is 1, name is "1-6", and weight is 100
 		graph.addEdge(1, 6, id, "1-6", 100);
 		++id;
 		graph.addEdge(8, 1, id, "8-1", 99);
@@ -37,12 +38,10 @@ public class Sample {
 		graph.addEdge(7, 10, id, "7-10", 100);
 		++id;
 		graph.addEdge(9, 2, id, "9-10", 100);
-		
-		Edge[] edges = graph.getEdges(1);		
-		graph.printEdges(1, edges);
+			
+		System.out.println("Dump of Vertices and their edges");
 		System.out.println(graph.toString());
-		
-		
+				
 		Search search = new SearchShortestPath();
 		Map<Integer, Integer> shortestPath = search.getPath(1, 10, graph.getVertexList());
 		if(shortestPath == null) {
@@ -50,6 +49,7 @@ public class Sample {
 		}  else {
 			int dest = 10;
 			Integer[] sequencedPath = graph.formatPathResults(shortestPath, dest);
+			System.out.println("\nPath vertex IDs from source to destination");
 			for(Integer link : sequencedPath)
 				System.out.println(link);		 
 		}
